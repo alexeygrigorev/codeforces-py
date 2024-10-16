@@ -1,10 +1,10 @@
 import os
 import sys
 import yaml
+
 import importlib.util
 
 from io import StringIO
-
 from contextlib import redirect_stdout
 
 
@@ -16,8 +16,10 @@ def load_yaml_test_cases(yaml_file):
 def run_with_input_and_capture_output(solve_function, input_data):
     input_mock = StringIO(input_data)
     output_capture = StringIO()
+
     with redirect_stdout(output_capture):
         solve_function(input_mock)
+
     return output_capture.getvalue().strip()
 
 
@@ -43,14 +45,13 @@ def run_tests(competition=None, task=None):
     for yaml_path, task_file in get_test_cases(competition, task):
         print(f"Running tests for {task_file}")
 
-        # Load the solve function
         spec = importlib.util.spec_from_file_location("module.name", task_file)
         module = importlib.util.module_from_spec(spec)
         spec.loader.exec_module(module)
         solve_function = module.solve
 
-        # Load and run test cases
         test_cases = load_yaml_test_cases(yaml_path)
+
         for i, test_case in enumerate(test_cases):
             result = run_with_input_and_capture_output(
                 solve_function, test_case["input"].strip()

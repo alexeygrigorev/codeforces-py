@@ -1,0 +1,18 @@
+- input: |
+    1
+    GA
+    GAR
+  output: |
+    4
+- input: |
+    3
+    GARAGE
+    GARAGEFORSALE
+    ABCDE
+    AABCD
+    TRAINING
+    DRAINING
+  output: |
+    14
+    10
+    16
